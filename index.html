@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoMPuTE Power Law - Interactive Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .controls {
+            padding: 40px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .control-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+
+        .form-group select {
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1em;
+            background: white;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group select:hover {
+            border-color: #667eea;
+        }
+
+        .load-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .load-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .load-button:active {
+            transform: translateY(0);
+        }
+
+        .load-button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .content {
+            padding: 40px;
+            min-height: 500px;
+        }
+
+        .placeholder {
+            text-align: center;
+            color: #6c757d;
+            font-size: 1.2em;
+            padding: 60px 20px;
+        }
+
+        .placeholder svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .iframe-container {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .info-message {
+            background: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #bee5eb;
+        }
+
+        @media (max-width: 768px) {
+            .control-group {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .controls {
+                padding: 20px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>CoMPuTE Power Law</h1>
+            <p>Interactive Visualization Dashboard</p>
+        </div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <div class="form-group">
+                    <label for="gender">Gender:</label>
+                    <select id="gender">
+                        <option value="">Select Gender</option>
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="condition">Condition:</label>
+                    <select id="condition">
+                        <option value="">Select Condition</option>
+                        <option value="Ast">Asthma</option>
+                        <option value="SMI">Serious mental illness</option>
+                        <option value="Anx">Anxiety</option>
+                        <option value="Dep">Depression</option>
+                        <option value="RA">Rheumatoid arthritis</option>
+                        <option value="Diab">Diabetes</option>
+                        <option value="Hyp">Hypertension</option>
+                        <option value="Ost">Osteoporosis</option>
+                        <option value="CHD">Coronary heart disease</option>
+                        <option value="Can">Cancer</option>
+                        <option value="PAD">Peripheral arterial disease</option>
+                        <option value="COPD">Chronic obstructive pulmonary disease</option>
+                        <option value="StroTIA">Stroke or transient ischaemic attack</option>
+                        <option value="AF">Atrial fibrillation</option>
+                        <option value="HF">Heart failure</option>
+                        <option value="Park">Parkinson's disease</option>
+                        <option value="CKD">Chronic kidney disease</option>
+                        <option value="Dem">Dementia</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ageBand">Age Band:</label>
+                    <select id="ageBand">
+                        <option value="">Select Age Band</option>
+                        <option value="(20, 29)">20-29 years</option>
+                        <option value="(30, 39)">30-39 years</option>
+                        <option value="(40, 49)">40-49 years</option>
+                        <option value="(50, 59)">50-59 years</option>
+                        <option value="(60, 69)">60-69 years</option>
+                        <option value="(70, 79)">70-79 years</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button class="load-button" onclick="loadVisualization()">Load Visualization</button>
+        </div>
+        
+        <div class="content" id="content">
+            <div class="placeholder">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                </svg>
+                <p>Select gender, condition, and age band to view the visualization</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Available files mapping based on the actual files in the directory
+        const availableFiles = new Set([
+            'F_AF_(40, 49)', 'F_AF_(50, 59)', 'F_AF_(60, 69)', 'F_AF_(70, 79)',
+            'F_Anx_(20, 29)', 'F_Anx_(30, 39)', 'F_Anx_(40, 49)', 'F_Anx_(50, 59)', 'F_Anx_(60, 69)', 'F_Anx_(70, 79)',
+            'F_Ast_(20, 29)', 'F_Ast_(30, 39)', 'F_Ast_(40, 49)', 'F_Ast_(50, 59)', 'F_Ast_(60, 69)', 'F_Ast_(70, 79)',
+            'F_CHD_(30, 39)', 'F_CHD_(40, 49)', 'F_CHD_(50, 59)', 'F_CHD_(60, 69)', 'F_CHD_(70, 79)',
+            'F_CKD_(50, 59)', 'F_CKD_(60, 69)', 'F_CKD_(70, 79)',
+            'F_COPD_(30, 39)', 'F_COPD_(40, 49)', 'F_COPD_(50, 59)', 'F_COPD_(60, 69)', 'F_COPD_(70, 79)',
+            'F_Can_(20, 29)', 'F_Can_(30, 39)', 'F_Can_(40, 49)', 'F_Can_(50, 59)', 'F_Can_(60, 69)', 'F_Can_(70, 79)',
+            'F_Dem_(60, 69)', 'F_Dem_(70, 79)',
+            'F_Dep_(20, 29)', 'F_Dep_(30, 39)', 'F_Dep_(40, 49)', 'F_Dep_(50, 59)', 'F_Dep_(60, 69)', 'F_Dep_(70, 79)',
+            'F_Diab_(20, 29)', 'F_Diab_(30, 39)', 'F_Diab_(40, 49)', 'F_Diab_(50, 59)', 'F_Diab_(60, 69)', 'F_Diab_(70, 79)',
+            'F_HF_(60, 69)', 'F_HF_(70, 79)',
+            'F_Hyp_(20, 29)', 'F_Hyp_(30, 39)', 'F_Hyp_(40, 49)', 'F_Hyp_(50, 59)', 'F_Hyp_(60, 69)', 'F_Hyp_(70, 79)',
+            'F_Ost_(20, 29)', 'F_Ost_(30, 39)', 'F_Ost_(40, 49)', 'F_Ost_(50, 59)'
+        ]);
+
+        function updateAvailableOptions() {
+            const gender = document.getElementById('gender').value;
+            const condition = document.getElementById('condition').value;
+            const ageBand = document.getElementById('ageBand').value;
+
+            // Update condition options based on gender selection
+            if (gender) {
+                const conditionSelect = document.getElementById('condition');
+                const currentCondition = conditionSelect.value;
+                
+                // Get available conditions for the selected gender
+                const availableConditions = new Set();
+                availableFiles.forEach(file => {
+                    if (file.startsWith(gender + '_')) {
+                        const parts = file.split('_');
+                        if (parts.length >= 2) {
+                            availableConditions.add(parts[1]);
+                        }
+                    }
+                });
+
+                // Update condition options
+                Array.from(conditionSelect.options).forEach(option => {
+                    if (option.value && !availableConditions.has(option.value)) {
+                        option.style.display = 'none';
+                        option.disabled = true;
+                    } else {
+                        option.style.display = 'block';
+                        option.disabled = false;
+                    }
+                });
+
+                // Reset condition if it's not available for the selected gender
+                if (currentCondition && !availableConditions.has(currentCondition)) {
+                    conditionSelect.value = '';
+                }
+            }
+
+            // Update age band options based on gender and condition selection
+            if (gender && condition) {
+                const ageBandSelect = document.getElementById('ageBand');
+                const currentAgeBand = ageBandSelect.value;
+                
+                // Get available age bands for the selected gender and condition
+                const availableAgeBands = new Set();
+                availableFiles.forEach(file => {
+                    if (file.startsWith(gender + '_' + condition + '_')) {
+                        const parts = file.split('_');
+                        if (parts.length >= 3) {
+                            availableAgeBands.add(parts[2]);
+                        }
+                    }
+                });
+
+                // Update age band options
+                Array.from(ageBandSelect.options).forEach(option => {
+                    if (option.value && !availableAgeBands.has(option.value)) {
+                        option.style.display = 'none';
+                        option.disabled = true;
+                    } else {
+                        option.style.display = 'block';
+                        option.disabled = false;
+                    }
+                });
+
+                // Reset age band if it's not available for the selected gender and condition
+                if (currentAgeBand && !availableAgeBands.has(currentAgeBand)) {
+                    ageBandSelect.value = '';
+                }
+            }
+
+            // Update load button state
+            updateLoadButton();
+        }
+
+        function updateLoadButton() {
+            const gender = document.getElementById('gender').value;
+            const condition = document.getElementById('condition').value;
+            const ageBand = document.getElementById('ageBand').value;
+            const loadButton = document.querySelector('.load-button');
+
+            if (gender && condition && ageBand) {
+                const fileKey = `${gender}_${condition}_${ageBand}`;
+                if (availableFiles.has(fileKey)) {
+                    loadButton.disabled = false;
+                    loadButton.textContent = 'Load Visualization';
+                } else {
+                    loadButton.disabled = true;
+                    loadButton.textContent = 'File Not Available';
+                }
+            } else {
+                loadButton.disabled = true;
+                loadButton.textContent = 'Load Visualization';
+            }
+        }
+
+        function loadVisualization() {
+            const gender = document.getElementById('gender').value;
+            const condition = document.getElementById('condition').value;
+            const ageBand = document.getElementById('ageBand').value;
+            const content = document.getElementById('content');
+
+            if (!gender || !condition || !ageBand) {
+                content.innerHTML = `
+                    <div class="error-message">
+                        Please select all three options: Gender, Condition, and Age Band.
+                    </div>
+                `;
+                return;
+            }
+
+            const fileName = `fig_${gender}_${condition}_${ageBand}.html`;
+            const fileKey = `${gender}_${condition}_${ageBand}`;
+            
+            if (!availableFiles.has(fileKey)) {
+                content.innerHTML = `
+                    <div class="error-message">
+                        The file "${fileName}" is not available. Please try a different combination.
+                    </div>
+                `;
+                return;
+            }
+
+            const filePath = `cond_flow_html/${fileName}`;
+            
+            content.innerHTML = `
+                <div class="info-message">
+                    Loading visualization: ${fileName}
+                </div>
+                <div class="iframe-container">
+                    <iframe src="${filePath}" title="Visualization for ${gender === 'M' ? 'Male' : 'Female'} - ${document.querySelector('#condition option:checked').textContent} - Age ${ageBand.replace(/[()]/g, '')}"></iframe>
+                </div>
+            `;
+        }
+
+        // Add event listeners
+        document.getElementById('gender').addEventListener('change', updateAvailableOptions);
+        document.getElementById('condition').addEventListener('change', updateAvailableOptions);
+        document.getElementById('ageBand').addEventListener('change', updateAvailableOptions);
+
+        // Initialize the interface
+        updateAvailableOptions();
+    </script>
+</body>
+</html>
