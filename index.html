@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multiple Long-Term Condition Accumulation Pathways</title>
+    <title>Complex Multiple Long-Term Condition Accumulation Pathways</title>
+    <!-- <title>Multiple Long-Term Condition Accumulation Pathways</title> -->
     <style>
         * {
             margin: 0;
@@ -227,7 +228,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1><b>Multiple Long-Term Condition Accumulation Pathways</b></h1>
+            <!-- <h1><b>Multiple Long-Term Condition Accumulation Pathways</b></h1> -->
+            <h1><b>Complex Multiple Long-Term Condition Accumulation Pathways</b></h1>
             <p><b>Interactive Visualization Dashboard (select available options, and click LOAD VISUALISATION)</b></p>
         </div>
         
@@ -270,13 +272,13 @@
                 <div class="form-group">
                     <label for="ageBand">Onset Age Band:</label>
                     <select id="ageBand">
-                        <!-- <option value="">Select Onset Age Band</option> -->
-                        <!-- <option value="(20, 29)">20-29 years</option> -->
-                        <!-- <option value="(30, 39)">30-39 years</option> -->
+                        <option value="">Select Onset Age Band</option>
+                        <option value="(20, 29)">20-29 years</option>
+                        <option value="(30, 39)">30-39 years</option>
                         <option value="(40, 49)">40-49 years</option>
-                        <!-- <option value="(50, 59)">50-59 years</option> -->
-                        <!-- <option value="(60, 69)">60-69 years</option> -->
-                        <!-- <option value="(70, 79)">70-79 years</option> -->
+                        <option value="(50, 59)">50-59 years</option>
+                        <option value="(60, 69)">60-69 years</option>
+                        <option value="(70, 79)">70-79 years</option>
                     </select>
                 </div>
             </div>
@@ -295,43 +297,39 @@
     </div>
 
     <script>
-        // Available files mapping based on the actual files in the directory
+        // Available files mapping based on the actual _cmltc.html files in the directory
         const availableFiles = new Set([
-            // Female files
-            'F_Anx_(20, 29)', 'F_Anx_(30, 39)', 'F_Anx_(40, 49)', 'F_Anx_(50, 59)', 'F_Anx_(60, 69)', 'F_Anx_(70, 79)', 
-            'F_Dep_(20, 29)', 'F_Dep_(30, 39)', 'F_Dep_(40, 49)', 'F_Dep_(50, 59)', 'F_Dep_(60, 69)', 'F_Dep_(70, 79)', 
-            'F_SMI_(20, 29)', 'F_SMI_(30, 39)', 'F_SMI_(40, 49)', 'F_SMI_(50, 59)', 
-            'F_Ast_(20, 29)', 'F_Ast_(30, 39)', 'F_Ast_(40, 49)', 'F_Ast_(50, 59)', 'F_Ast_(60, 69)', 'F_Ast_(70, 79)', 
-            'F_COPD_(40, 49)', 'F_COPD_(50, 59)', 'F_COPD_(60, 69)', 'F_COPD_(70, 79)', 
-            'F_Diab_(20, 29)', 'F_Diab_(30, 39)', 'F_Diab_(40, 49)', 'F_Diab_(50, 59)', 'F_Diab_(60, 69)', 'F_Diab_(70, 79)', 
-            'F_Hyp_(20, 29)', 'F_Hyp_(30, 39)', 'F_Hyp_(40, 49)', 'F_Hyp_(50, 59)', 'F_Hyp_(60, 69)', 'F_Hyp_(70, 79)', 
-            'F_CHD_(30, 39)', 'F_CHD_(40, 49)', 'F_CHD_(50, 59)', 'F_CHD_(60, 69)', 'F_CHD_(70, 79)', 
-            'F_StroTIA_(30, 39)', 'F_StroTIA_(40, 49)', 'F_StroTIA_(50, 59)', 'F_StroTIA_(60, 69)', 'F_StroTIA_(70, 79)', 
-            'F_AF_(40, 49)', 'F_AF_(50, 59)', 'F_AF_(60, 69)', 'F_AF_(70, 79)', 
-            'F_HF_(60, 69)', 'F_HF_(70, 79)', 
-            'F_PAD_(50, 59)', 'F_PAD_(60, 69)', 'F_PAD_(70, 79)', 
-            'F_CKD_(60, 69)', 'F_CKD_(70, 79)', 
-            'F_Dem_(70, 79)', 
-            'F_Ost_(30, 39)', 'F_Ost_(40, 49)', 'F_Ost_(50, 59)', 'F_Ost_(60, 69)', 'F_Ost_(70, 79)', 
-            'F_RA_(20, 29)', 'F_RA_(30, 39)', 'F_RA_(40, 49)', 'F_RA_(50, 59)', 'F_RA_(60, 69)', 'F_RA_(70, 79)', 
-            'F_Can_(20, 29)', 'F_Can_(30, 39)', 'F_Can_(40, 49)', 'F_Can_(50, 59)', 'F_Can_(60, 69)', 'F_Can_(70, 79)', 
-            'M_Anx_(20, 29)', 'M_Anx_(30, 39)', 'M_Anx_(40, 49)', 'M_Anx_(50, 59)', 'M_Anx_(60, 69)', 'M_Anx_(70, 79)', 
-            'M_Dep_(20, 29)', 'M_Dep_(30, 39)', 'M_Dep_(40, 49)', 'M_Dep_(50, 59)', 'M_Dep_(60, 69)', 'M_Dep_(70, 79)', 
-            'M_SMI_(20, 29)', 'M_SMI_(30, 39)', 'M_SMI_(40, 49)', 'M_SMI_(50, 59)', 
-            'M_Ast_(20, 29)', 'M_Ast_(30, 39)', 'M_Ast_(40, 49)', 'M_Ast_(50, 59)', 'M_Ast_(60, 69)', 'M_Ast_(70, 79)', 
-            'M_COPD_(30, 39)', 'M_COPD_(40, 49)', 'M_COPD_(50, 59)', 'M_COPD_(60, 69)', 'M_COPD_(70, 79)', 
-            'M_Diab_(20, 29)', 'M_Diab_(30, 39)', 'M_Diab_(40, 49)', 'M_Diab_(50, 59)', 'M_Diab_(60, 69)', 'M_Diab_(70, 79)', 
-            'M_Hyp_(20, 29)', 'M_Hyp_(30, 39)', 'M_Hyp_(40, 49)', 'M_Hyp_(50, 59)', 'M_Hyp_(60, 69)', 'M_Hyp_(70, 79)', 
-            'M_CHD_(30, 39)', 'M_CHD_(40, 49)', 'M_CHD_(50, 59)', 'M_CHD_(60, 69)', 'M_CHD_(70, 79)', 
-            'M_StroTIA_(30, 39)', 'M_StroTIA_(40, 49)', 'M_StroTIA_(50, 59)', 'M_StroTIA_(60, 69)', 'M_StroTIA_(70, 79)', 
-            'M_AF_(30, 39)', 'M_AF_(40, 49)', 'M_AF_(50, 59)', 'M_AF_(60, 69)', 'M_AF_(70, 79)', 
-            'M_HF_(60, 69)', 'M_HF_(70, 79)', 
-            'M_PAD_(40, 49)', 'M_PAD_(50, 59)', 'M_PAD_(60, 69)', 'M_PAD_(70, 79)', 
-            'M_CKD_(60, 69)', 'M_CKD_(70, 79)', 
-            'M_Park_(60, 69)', 
-            'M_Ost_(50, 59)', 
-            'M_RA_(30, 39)', 'M_RA_(40, 49)', 'M_RA_(50, 59)', 'M_RA_(60, 69)', 
-            'M_Can_(20, 29)', 'M_Can_(30, 39)', 'M_Can_(40, 49)', 'M_Can_(50, 59)', 'M_Can_(60, 69)', 'M_Can_(70, 79)', 
+            // Female files with _cmltc.html versions
+            'F_AF_(50, 59)', 'F_AF_(60, 69)', 'F_AF_(70, 79)',
+            'F_Anx_(20, 29)', 'F_Anx_(30, 39)', 'F_Anx_(40, 49)', 'F_Anx_(50, 59)', 'F_Anx_(60, 69)', 'F_Anx_(70, 79)',
+            'F_Ast_(20, 29)', 'F_Ast_(30, 39)', 'F_Ast_(40, 49)', 'F_Ast_(50, 59)', 'F_Ast_(60, 69)', 'F_Ast_(70, 79)',
+            'F_CHD_(40, 49)', 'F_CHD_(50, 59)', 'F_CHD_(60, 69)', 'F_CHD_(70, 79)',
+            'F_COPD_(40, 49)', 'F_COPD_(50, 59)', 'F_COPD_(60, 69)', 'F_COPD_(70, 79)',
+            'F_Can_(30, 39)', 'F_Can_(40, 49)', 'F_Can_(50, 59)', 'F_Can_(60, 69)', 'F_Can_(70, 79)',
+            'F_Dep_(20, 29)', 'F_Dep_(30, 39)', 'F_Dep_(40, 49)', 'F_Dep_(50, 59)', 'F_Dep_(60, 69)', 'F_Dep_(70, 79)',
+            'F_Diab_(30, 39)', 'F_Diab_(40, 49)', 'F_Diab_(50, 59)', 'F_Diab_(60, 69)', 'F_Diab_(70, 79)',
+            'F_HF_(70, 79)',
+            'F_Hyp_(20, 29)', 'F_Hyp_(30, 39)', 'F_Hyp_(40, 49)', 'F_Hyp_(50, 59)', 'F_Hyp_(60, 69)', 'F_Hyp_(70, 79)',
+            'F_Ost_(50, 59)', 'F_Ost_(60, 69)', 'F_Ost_(70, 79)',
+            'F_PAD_(60, 69)',
+            'F_RA_(30, 39)', 'F_RA_(40, 49)', 'F_RA_(50, 59)', 'F_RA_(60, 69)',
+            'F_SMI_(20, 29)', 'F_SMI_(30, 39)', 'F_SMI_(40, 49)',
+            'F_StroTIA_(40, 49)', 'F_StroTIA_(50, 59)', 'F_StroTIA_(60, 69)', 'F_StroTIA_(70, 79)',
+            
+            // Male files with _cmltc.html versions
+            'M_AF_(40, 49)', 'M_AF_(50, 59)', 'M_AF_(60, 69)', 'M_AF_(70, 79)',
+            'M_Anx_(20, 29)', 'M_Anx_(30, 39)', 'M_Anx_(40, 49)', 'M_Anx_(50, 59)', 'M_Anx_(60, 69)',
+            'M_Ast_(20, 29)', 'M_Ast_(30, 39)', 'M_Ast_(40, 49)', 'M_Ast_(50, 59)', 'M_Ast_(60, 69)', 'M_Ast_(70, 79)',
+            'M_CHD_(30, 39)', 'M_CHD_(40, 49)', 'M_CHD_(50, 59)', 'M_CHD_(60, 69)', 'M_CHD_(70, 79)',
+            'M_COPD_(40, 49)', 'M_COPD_(50, 59)', 'M_COPD_(60, 69)', 'M_COPD_(70, 79)',
+            'M_Can_(30, 39)', 'M_Can_(40, 49)', 'M_Can_(50, 59)', 'M_Can_(60, 69)', 'M_Can_(70, 79)',
+            'M_Dep_(20, 29)', 'M_Dep_(30, 39)', 'M_Dep_(40, 49)', 'M_Dep_(50, 59)', 'M_Dep_(60, 69)', 'M_Dep_(70, 79)',
+            'M_Diab_(30, 39)', 'M_Diab_(40, 49)', 'M_Diab_(50, 59)', 'M_Diab_(60, 69)', 'M_Diab_(70, 79)',
+            'M_Hyp_(20, 29)', 'M_Hyp_(30, 39)', 'M_Hyp_(40, 49)', 'M_Hyp_(50, 59)', 'M_Hyp_(60, 69)', 'M_Hyp_(70, 79)',
+            'M_PAD_(50, 59)', 'M_PAD_(60, 69)',
+            'M_RA_(50, 59)',
+            'M_SMI_(20, 29)', 'M_SMI_(30, 39)',
+            'M_StroTIA_(40, 49)', 'M_StroTIA_(50, 59)', 'M_StroTIA_(60, 69)', 'M_StroTIA_(70, 79)'
         ]);
 
         function updateAvailableOptions() {
@@ -445,7 +443,7 @@
                 return;
             }
 
-            const fileName = `fig_${sex}_${condition}_${ageBand}_complete.html`;
+            const fileName = `fig_${sex}_${condition}_${ageBand}_cmltc.html`;
             const fileKey = `${sex}_${condition}_${ageBand}`;
             
             if (!availableFiles.has(fileKey)) {
