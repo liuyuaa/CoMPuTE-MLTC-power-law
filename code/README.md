@@ -76,11 +76,6 @@ Rheumatoid Arthritis (RA).
 
 ---
 
-### Color Coding Legend:
-- <span style="color:red">Red</span>: Core patient data and timeline variables
-- <span style="color:blue">Blue</span>: Derived summary metrics
-
-
 ## Analysis Details
 
 ### Age Bands
