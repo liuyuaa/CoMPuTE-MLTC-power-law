@@ -45,12 +45,8 @@ Scripts 2–4 all depend on outputs generated in Step 1 and should be run in the
 ├── 3_second_order_fitting.py
 ├── 4_exponential_fitting.py
 ├── README.md
-├── data/
-│   └── df_patient_20_80.csv
-├── results_boot/
-├── results_fit/
-├── results_fit_log_poly/
-└── results_fit_power_exp/
+└── data/
+    └── df_patient_20_80.csv
 ```
 
 ---
